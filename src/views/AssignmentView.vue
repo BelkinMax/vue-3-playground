@@ -11,12 +11,12 @@ export default defineComponent({
     const { params } = useRoute()
 
     const assignmentComponentMap = {
-      'simple-counter': defineAsyncComponent(() => import('@/assignments/SimpleCounter/index.vue')),
-      'reuse-components': defineAsyncComponent(() => import('@/assignments/ReuseComponents/index.vue')),
-      'credit-card-form': defineAsyncComponent(() => import('@/assignments/CreditCardForm/index.vue')),
-      'jokes-api': defineAsyncComponent(() => import('@/assignments/JokesApi/index.vue')),
-      'calculator-app': defineAsyncComponent(() => import('@/assignments/CalculatorApp/index.vue')),
-      'find-shop-cart-bug': defineAsyncComponent(() => import('@/assignments/FindShopCartBug/index.vue'))
+      'simple-counter': defineAsyncComponent(() => import('@/assignments/basic/SimpleCounter/index.vue')),
+      'reuse-components': defineAsyncComponent(() => import('@/assignments/basic/ReuseComponents/index.vue')),
+      'credit-card-form': defineAsyncComponent(() => import('@/assignments/basic/CreditCardForm/index.vue')),
+      'jokes-api': defineAsyncComponent(() => import('@/assignments/basic/JokesApi/index.vue')),
+      'calculator-app': defineAsyncComponent(() => import('@/assignments/basic/CalculatorApp/index.vue')),
+      'find-shop-cart-bug': defineAsyncComponent(() => import('@/assignments/basic/FindShopCartBug/index.vue'))
     }
     const assignmentComponent = assignmentComponentMap[params.assignmentId];
 

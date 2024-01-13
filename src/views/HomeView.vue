@@ -82,7 +82,7 @@ export default defineComponent({
 
 .category-block {
   border: 1px solid var(--color-border);
-  padding: 8px 14px;
+  padding: 8px 14px 18px;
   border-radius: 10px;
 
   .category-title {

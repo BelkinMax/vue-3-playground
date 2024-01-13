@@ -1,7 +1,7 @@
 <script>
 import { ref, reactive, watch, defineComponent } from 'vue';
-import { ms } from './timeHelper';
-import CountdownSegment from "./CountdownSegment.vue";
+import { ms } from './timeHelper.js';
+import CountdownSegment from "./CountDownSegment.vue";
 
 export default defineComponent({
   name: 'SimpleCounter',
