@@ -1,7 +1,7 @@
 <script>
-import { ref, reactive, watch, defineComponent } from 'vue'
-import { ms } from './timeHelper.js'
-import CountdownSegment from './CountDownSegment.vue'
+import { defineComponent } from 'vue'
+import { ms } from './helpers/timeHelper.js'
+import CountdownSegment from './components/CountdownSegment.vue'
 
 export default defineComponent({
   name: 'SimpleCounter',
@@ -9,33 +9,34 @@ export default defineComponent({
     CountdownSegment
   },
   setup() {
-    const counterDate = ref(null)
-    const timer = ref(0)
-    const timerData = reactive({
+    const counterDate = null
+    const timerData = {
       days: 0,
       hours: 0,
       minutes: 0,
       seconds: 0
-    })
+    }
+    let timer = 0
     let timerInterval = null
 
-    watch(counterDate, (newValue) => {
+    onDateInputUpdate()
+
+    function onDateInputUpdate (newValue) {
       resetTimer()
 
       if (newValue) {
         initTimer(newValue)
       }
-    })
-
+    }
     function initTimer(dateValue) {
       const timeLeft = getTimeLeft(dateValue)
 
-      setTimeLeft(timeLeft - timer.value)
-      timer.value += 1000
+      setTimeLeft(timeLeft - timer)
+      timer += 1000
 
       timerInterval = setInterval(() => {
-        setTimeLeft(timeLeft - timer.value)
-        timer.value += 1000
+        setTimeLeft(timeLeft - timer)
+        timer += 1000
       }, 1000)
     }
 
@@ -45,7 +46,7 @@ export default defineComponent({
       }
 
       clearInterval(timerInterval)
-      timer.value = 0
+      timer = 0
       timerData.days = 0
       timerData.hours = 0
       timerData.minutes = 0
@@ -78,17 +79,30 @@ export default defineComponent({
 
 <template>
   <div class="countdown-box">
-    <input v-model="counterDate" type="date" />
-    <CountdownSegment label="days" :number="timerData.days" />
-    <CountdownSegment label="hours" :number="timerData.hours" />
-    <CountdownSegment label="minutes" :number="timerData.minutes" />
-    <CountdownSegment label="seconds" :number="timerData.seconds" />
+    <div class="countdown-clock">
+      <CountdownSegment label="days" :number="timerData.days" />
+      <CountdownSegment label="hours" :number="timerData.hours" />
+      <CountdownSegment label="minutes" :number="timerData.minutes" />
+      <CountdownSegment label="seconds" :number="timerData.seconds" />
+    </div>
+    <input v-model="counterDate" type="datetime-local" class="date-input" />
   </div>
 </template>
 
 <style lang="scss" scoped>
 .countdown-box {
   display: flex;
+  flex-direction: column;
   justify-content: center;
+  align-items: center;
+  gap: 20px;
+
+  .countdown-clock {
+    display: flex;
+    justify-content: center;
+  }
+  .date-input {
+    cursor: pointer;
+  }
 }
 </style>
