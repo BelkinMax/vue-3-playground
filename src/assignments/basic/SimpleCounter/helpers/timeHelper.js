@@ -1,15 +1,15 @@
-export function ms(ms: number) {
+export function ms(ms) {
   return {
-    getDays(): number {
+    getDays() {
       return Math.floor(ms / (1000 * 60 * 60 * 24)) || 0
     },
-    getHours(): number {
+    getHours() {
       return Math.floor((ms / (1000 * 60 * 60)) % 24) || 0
     },
-    getMinutes(): number {
+    getMinutes() {
       return Math.floor((ms / 1000 / 60) % 60) || 0
     },
-    getSeconds(): number {
+    getSeconds() {
       return Math.floor((ms / 1000) % 60) || 0
     }
   }
