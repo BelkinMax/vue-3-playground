@@ -22,7 +22,7 @@ export default defineComponent({
             ['📄 Template Refs', 'https://vuejs.org/guide/essentials/template-refs.html#template-refs'],
             ['📄 Form Input Bindings', 'https://vuejs.org/guide/essentials/forms.html'],
             ['📄 Lifecycle Hooks', 'https://vuejs.org/guide/essentials/lifecycle.html'],
-            ['📄 Async Components', 'https://vuejs.org/guide/components/async.html#basic-usage'],
+            ['📄 Async Components', 'https://vuejs.org/guide/components/async.html#basic-usage']
           ],
           [
             ['⚙️ Simple Counter', '/simple-counter'],

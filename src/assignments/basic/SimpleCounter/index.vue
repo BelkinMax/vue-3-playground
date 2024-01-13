@@ -21,7 +21,7 @@ export default defineComponent({
 
     onDateInputUpdate()
 
-    function onDateInputUpdate (newValue) {
+    function onDateInputUpdate(newValue) {
       resetTimer()
 
       if (newValue) {
