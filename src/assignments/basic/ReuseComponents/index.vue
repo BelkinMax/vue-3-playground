@@ -7,7 +7,5 @@ export default defineComponent({
 </script>
 
 <template>
-  <div>
-    ReuseComponents
-  </div>
+  <div>ReuseComponents</div>
 </template>

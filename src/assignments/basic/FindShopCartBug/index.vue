@@ -7,7 +7,5 @@ export default defineComponent({
 </script>
 
 <template>
-  <div>
-    FindShopCartBug
-  </div>
+  <div>FindShopCartBug</div>
 </template>

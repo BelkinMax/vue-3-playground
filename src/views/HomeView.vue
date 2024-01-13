@@ -27,7 +27,7 @@ export default defineComponent({
           ['⚙️ Credit Card Form', '/credit-card-form'],
           ['⚙️ Jokes Api', '/jokes-api'],
           ['⚙️ Calculator App', '/calculator-app'],
-          ['⚙️ Find Shop Cart Bug', '/find-shop-cart-bug'],
+          ['⚙️ Find Shop Cart Bug', '/find-shop-cart-bug']
         ]
       ],
       [
@@ -46,6 +46,7 @@ export default defineComponent({
         '📁 Pro',
         [
           ['⚙️ Ecommerce App Live Search', '/ecommerce-app-live-search'],
+          ['⚙️ Ecommerce App Add To Cart', '/ecommerce-app-add-to-cart']
         ]
       ]
     ]

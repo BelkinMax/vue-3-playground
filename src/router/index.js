@@ -13,7 +13,7 @@ const router = createRouter({
     {
       path: '/:assignmentId',
       component: AssignmentView
-    },
+    }
   ]
 })
 

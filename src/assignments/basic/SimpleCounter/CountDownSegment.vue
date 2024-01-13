@@ -1,25 +1,18 @@
 <script>
-import { defineComponent } from 'vue';
+import { defineComponent } from 'vue'
 
 export default defineComponent({
   props: {
     label: String,
-    number: Number,
+    number: Number
   }
 })
 </script>
 
 <template>
   <div class="segment">
-    <span
-      :key="number"
-      class="numbers"
-      v-text="number"
-    />
-    <span
-      class="label"
-      v-text="label"
-    />
+    <span :key="number" class="numbers" v-text="number" />
+    <span class="label" v-text="label" />
   </div>
 </template>
 

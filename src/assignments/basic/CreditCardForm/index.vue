@@ -7,7 +7,5 @@ export default defineComponent({
 </script>
 
 <template>
-  <div>
-    CreditCardForm
-  </div>
+  <div>CreditCardForm</div>
 </template>

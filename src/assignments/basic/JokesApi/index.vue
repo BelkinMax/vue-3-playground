@@ -7,7 +7,5 @@ export default defineComponent({
 </script>
 
 <template>
-  <div>
-    JokesApi
-  </div>
+  <div>JokesApi</div>
 </template>

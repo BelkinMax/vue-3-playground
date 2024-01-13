@@ -18,9 +18,9 @@ export default defineComponent({
       'calculator-app': defineAsyncComponent(() => import('@/assignments/basic/CalculatorApp/index.vue')),
       'find-shop-cart-bug': defineAsyncComponent(() => import('@/assignments/basic/FindShopCartBug/index.vue'))
     }
-    const assignmentComponent = assignmentComponentMap[params.assignmentId];
+    const assignmentComponent = assignmentComponentMap[params.assignmentId]
 
-    !assignmentComponent && router.push('/');
+    !assignmentComponent && router.push('/')
 
     return {
       assignmentComponent

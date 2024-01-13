@@ -7,7 +7,5 @@ export default defineComponent({
 </script>
 
 <template>
-  <div>
-    CalculatorApp
-  </div>
+  <div>CalculatorApp</div>
 </template>
