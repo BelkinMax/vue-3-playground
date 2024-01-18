@@ -16,18 +16,3 @@ export default defineComponent({
     <span class="label" v-text="label" />
   </div>
 </template>
-
-<style>
-.segment {
-  text-align: center;
-  width: 80px;
-}
-.numbers {
-  font-size: 32px;
-}
-.label {
-  display: block;
-  padding-top: 0.5rem;
-  font-size: 16px;
-}
-</style>

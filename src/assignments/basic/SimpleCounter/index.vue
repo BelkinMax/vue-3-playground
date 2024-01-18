@@ -89,20 +89,4 @@ export default defineComponent({
   </div>
 </template>
 
-<style lang="scss" scoped>
-.countdown-box {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 20px;
-
-  .countdown-clock {
-    display: flex;
-    justify-content: center;
-  }
-  .date-input {
-    cursor: pointer;
-  }
-}
-</style>
+<style lang="scss" src="./simple-counter.scss" />

@@ -1,0 +1,27 @@
+.countdown-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+
+  .countdown-clock {
+    display: flex;
+    justify-content: center;
+  }
+  .date-input {
+    cursor: pointer;
+  }
+  .segment {
+    text-align: center;
+    width: 80px;
+  }
+  .numbers {
+    font-size: 32px;
+  }
+  .label {
+    display: block;
+    padding-top: 0.5rem;
+    font-size: 16px;
+  }
+}
