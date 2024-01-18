@@ -28,7 +28,6 @@ export default defineComponent({
             ['⚙️ Simple Counter', '/simple-counter'],
             ['⚙️ Reuse Components', '/reuse-components'],
             ['⚙️ Credit Card Form', '/credit-card-form'],
-            ['⚙️ Jokes Api', '/jokes-api'],
             ['⚙️ Calculator App', '/calculator-app'],
             ['⚙️ Find Shop Cart Bug', '/find-shop-cart-bug']
           ]
