@@ -10,6 +10,8 @@ export default defineComponent({
     const hasErrors = errors.some(Boolean)
 
     function validateNumber(el) {
+      if (!el) return
+
       if (el.value.length === 16) {
         el.style.backgroundColor = 'lightgreen'
         errors[0] = false
@@ -19,6 +21,8 @@ export default defineComponent({
       }
     }
     function validateName(el) {
+      if (!el) return
+
       if (!el.value || /^[0-9]+$/.test(el.value) || el.value.length < 6) {
         el.style.backgroundColor = 'antiquewhite'
         errors[1] = true
@@ -28,6 +32,8 @@ export default defineComponent({
       }
     }
     function focusSubmit(el) {
+      if (!el) return
+
       if (!hasErrors) {
         el.disabled = false
         el.focus()
