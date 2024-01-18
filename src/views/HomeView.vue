@@ -29,6 +29,7 @@ export default defineComponent({
             ['⚙️ Reuse Components', '/reuse-components'],
             ['⚙️ Credit Card Form', '/credit-card-form'],
             ['⚙️ Calculator App', '/calculator-app'],
+            ['⚙️ Quotes Chat', '/quotes-chat'],
             ['⚙️ Find Shop Cart Bug', '/find-shop-cart-bug']
           ]
         ]
