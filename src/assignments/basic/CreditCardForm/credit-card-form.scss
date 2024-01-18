@@ -1,0 +1,28 @@
+.credit-card-form form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+
+    input {
+      border: 1px solid lightgray;
+      border-radius: 4px;
+      padding: 10px 20px;
+    }
+  }
+
+  button[type='submit'] {
+    border: 1px solid lightgray;
+    border-radius: 4px;
+    padding: 10px 20px;
+    cursor: pointer;
+
+    &:disabled {
+      cursor: no-drop;
+    }
+  }
+}
