@@ -10,13 +10,12 @@ export default defineComponent({
     const question = ''
     let isLoading = false
 
-    // TODO: Implement watcher
-    // if (question.includes('.')) {
-    //   - set loading true
-    //   - fetch
-    //   - add to history
-    //   - set loading false
-    // }
+    // TODO: Implement watcher for question.includes('.')
+    //
+    // - set loading true
+    // - fetch
+    // - add to history
+    // - set loading false
 
     function addToHistory(question, answer) {
       if (history.length > 3) {
