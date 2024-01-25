@@ -2,14 +2,15 @@
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-  setup() {
-    function emitClick() {
-      // TODO: emit 'buttonClick'
-    }
-
-    return {
-      button: {},
-      emitClick
+  emits: ['clicked'],
+  props: {
+    label: {
+      type: String,
+      required: true
+    },
+    classes: {
+      type: String,
+      required: true
     }
   }
 })
@@ -19,10 +20,10 @@ export default defineComponent({
   <button
     class="button"
     :class="{
-      [button.classes]: true
+      [classes]: true
     }"
-    @click="emitClick"
+    @click="() => $emit('clicked')"
   >
-    {{ button.label }}
+    {{ label }}
   </button>
 </template>
