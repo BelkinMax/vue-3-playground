@@ -1,7 +1,7 @@
 <script setup>
 import { defineEmits, defineProps } from 'vue';
 
-const props = defineProps({ product: Object });
+const { product } = defineProps({ product: Object });
 const emit = defineEmits(['productAdd']);
 
 function onProductAddClick () {
@@ -12,11 +12,11 @@ function onProductAddClick () {
 <template>
   <div class="product-card">
     <div class="thumbnail">
-      <img :src="props.product.image" :alt="props.product.title" />
+      <img :src="product.image" :alt="product.title" />
     </div>
     <div class="content">
-      <h2 class="title">{{ props.product.title }}</h2>
-      <p class="price">{{ props.product.price }}$</p>
+      <h2 class="title">{{ product.title }}</h2>
+      <p class="price">{{ product.price }}$</p>
     </div>
     <div class="cta">
       <button @click="onProductAddClick">+</button>
