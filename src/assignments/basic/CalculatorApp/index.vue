@@ -15,7 +15,7 @@ export default defineComponent({
     const lastButton = computed(() => currentCalculationButtons.at(-1) || {});
     const screenResult = computed(() => calculationResult.value || calculationValues);
 
-    const buttons = reactive([
+    const buttons = [
       { label: 'C', value: 'clear', type: 'clear', classes: 'col-span-3' },
       { label: '÷', value: '/', type: 'symbol', classes: '' },
       { label: '7', value: '7', type: 'value', classes: '' },
@@ -32,7 +32,7 @@ export default defineComponent({
       { label: '+', value: '+', type: 'symbol', classes: '' },
       { label: '0', value: '0', type: 'value', classes: 'col-span-3' },
       { label: '=', value: 'equals', type: 'equals', classes: '' }
-    ]);
+    ];
 
     function handleClick(button) {
       calculationResult.value = ''
