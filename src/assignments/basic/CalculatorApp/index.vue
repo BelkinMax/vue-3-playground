@@ -1,5 +1,5 @@
 <script>
-import { defineComponent, computed, ref } from 'vue'
+import { defineComponent, computed, ref, reactive } from 'vue'
 import PadButton from './components/PadButton.vue'
 
 export default defineComponent({
@@ -8,10 +8,10 @@ export default defineComponent({
     PadButton
   },
   setup() {
-    const currentCalculationButtons = ref([])
+    const currentCalculationButtons = reactive([])
     let calculationResult = ref('');
-    const calculationValues = computed(() => currentCalculationButtons.value.map((button) => button.value).join(''))
-    const lastButton = computed(() => currentCalculationButtons.value.at(-1) || {})
+    const calculationValues = computed(() => currentCalculationButtons.map((button) => button.value).join(''))
+    const lastButton = computed(() => currentCalculationButtons.at(-1) || {})
     const screenResult = computed(() => calculationResult.value || calculationValues.value)
     const buttons = [
       { label: 'C', value: 'clear', type: 'clear', classes: 'col-span-3' },
@@ -46,7 +46,7 @@ export default defineComponent({
     }
 
     function onClear() {
-      currentCalculationButtons.value.splice(0, currentCalculationButtons.value.length)
+      currentCalculationButtons.splice(0, currentCalculationButtons.length)
     }
     function onEquals() {
       if (lastButton.value.type === 'value') {
@@ -59,7 +59,7 @@ export default defineComponent({
         (lastButton.value.type === 'value' && (button.type === 'value' || button.type === 'symbol')) ||
         (lastButton.value.type === 'symbol' && button.type === 'value')
       ) {
-        currentCalculationButtons.value.push(button)
+        currentCalculationButtons.push(button)
       }
     }
 
