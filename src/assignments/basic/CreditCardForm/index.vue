@@ -1,40 +1,43 @@
 <script>
-import { defineComponent } from 'vue'
+import { defineComponent, ref, computed } from 'vue'
 
 export default defineComponent({
   name: 'CreditCardForm',
   setup() {
-    const cardNumber = ''
-    const cardName = ''
-    const errors = [true, true]
-    const hasErrors = errors.some(Boolean)
+    const cardNumber = ref(null)
+    const cardName = ref(null)
+    const errors = ref([true, true])
+    const hasErrors = computed(() => {
+      return errors.value.some(error => error)
+    })
 
-    function validateNumber(el) {
+    function validateNumber({ target: el}) {
       if (!el) return
-
       if (el.value.length === 16) {
         el.style.backgroundColor = 'lightgreen'
-        errors[0] = false
+        errors.value[0] = false
       } else {
         el.style.backgroundColor = 'antiquewhite'
-        errors[0] = true
+        errors.value[0] = true
       }
     }
-    function validateName(el) {
+
+    function validateName({ target: el}) {
       if (!el) return
 
       if (!el.value || /^[0-9]+$/.test(el.value) || el.value.length < 6) {
         el.style.backgroundColor = 'antiquewhite'
-        errors[1] = true
+        errors.value[1] = true
       } else {
         el.style.backgroundColor = 'lightgreen'
-        errors[1] = false
+        errors.value[1] = false
       }
     }
+
     function focusSubmit(el) {
       if (!el) return
 
-      if (!hasErrors) {
+      if (!hasErrors.value) {
         el.disabled = false
         el.focus()
       } else {
@@ -58,11 +61,11 @@ export default defineComponent({
     <form @submit.prevent>
       <div class="field">
         <label for="cardNumber">Card Number:</label>
-        <input id="cardNumber" type="text" placeholder="1234567890123456" />
+        <input id="cardNumber" type="text" placeholder="1234567890123456" @keydown="validateNumber" />
       </div>
       <div class="field">
         <label for="cardName">Card Holder's Name:</label>
-        <input id="cardName" type="text" placeholder="Full Name" />
+        <input id="cardName" type="text" placeholder="Full Name" @keydown="validateName" />
       </div>
 
       <button :ref="focusSubmit" type="submit">Submit</button>
