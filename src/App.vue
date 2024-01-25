@@ -22,7 +22,7 @@ export default defineComponent({
 
 <template>
   <nav v-if="showBackNavigation" class="navigation">
-    <AppLink to="/">◀️ Prueba</AppLink>
+    <AppLink to="/">◀️ Back</AppLink>
   </nav>
 
   <main class="main">
