@@ -7,16 +7,21 @@ export default defineComponent({
   setup() {
     const api = useApi()
     const history = []
-    const question = ''
+    let question = ''
     let isLoading = false
 
-    // TODO: Implement watcher
-    // if (question.includes('.')) {
-    //   - set loading true
-    //   - fetch
-    //   - add to history
-    //   - set loading false
-    // }
+    // TODO: Implement watcher for question.includes('.')
+    //
+    // ? has dot
+    // - set loading true
+    // - await fetch
+    // - add to history
+    // - clear input
+    // - set loading false
+
+    function clearInput() {
+      question = ''
+    }
 
     function addToHistory(question, answer) {
       if (history.length > 3) {
