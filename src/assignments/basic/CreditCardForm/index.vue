@@ -46,7 +46,6 @@ export default defineComponent({
       cardName,
       validateNumber,
       validateName,
-      focusSubmit,
       hasErrors
     }
   }
