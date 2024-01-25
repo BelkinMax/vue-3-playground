@@ -1,6 +1,6 @@
 <script>
-import { defineComponent, ref, computed } from 'vue';
-import PadButton from './components/PadButton.vue';
+import { defineComponent, ref, computed } from 'vue'
+import PadButton from './components/PadButton.vue'
 
 export default defineComponent({
   name: 'CalculatorApp',
@@ -8,11 +8,11 @@ export default defineComponent({
     PadButton
   },
   setup() {
-    const currentCalculationButtons = ref([]);
-    const calculationResult = ref('');
-    const calculationValues = computed(() => currentCalculationButtons.value.map(button => button.value).join(''));
-    const lastButton = computed(() => currentCalculationButtons.value.at(-1) || {});
-    const screenResult = computed(() => calculationResult.value || calculationValues.value);
+    const currentCalculationButtons = ref([])
+    const calculationResult = ref('')
+    const calculationValues = computed(() => currentCalculationButtons.value.map(button => button.value).join(''))
+    const lastButton = computed(() => currentCalculationButtons.value.at(-1) || {})
+    const screenResult = computed(() => calculationResult.value || calculationValues.value)
 
     const buttons = [
       { label: 'C', value: 'clear', type: 'clear', classes: 'col-span-3' },
@@ -31,10 +31,10 @@ export default defineComponent({
       { label: '+', value: '+', type: 'symbol', classes: '' },
       { label: '0', value: '0', type: 'value', classes: 'col-span-3' },
       { label: '=', value: 'equals', type: 'equals', classes: '' }
-    ];
+    ]
 
     function handleClick(button) {
-      calculationResult.value = '';
+      calculationResult.value = ''
 
       switch (button.type) {
         case 'clear':
@@ -47,23 +47,23 @@ export default defineComponent({
     }
 
     function onClear() {
-      currentCalculationButtons.value.splice(0, currentCalculationButtons.value.length);
-      calculationResult.value = '';
+      currentCalculationButtons.value.splice(0, currentCalculationButtons.value.length)
+      calculationResult.value = ''
     }
 
     function onEquals() {
       if (lastButton.value.type === 'value') {
-        calculationResult.value = eval(calculationValues.value);
+        calculationResult.value = eval(calculationValues.value)
       }
     }
 
     function onNumber (button) {
-      const isValueButton = button.type === 'value';
-      const isSymbolButton = button.type === 'symbol';
-      const lastIsValue = lastButton.value.type === 'value';
+      const isValueButton = button.type === 'value'
+      const isSymbolButton = button.type === 'symbol'
+      const lastIsValue = lastButton.value.type === 'value'
 
       if (isValueButton || (isSymbolButton && lastIsValue)) {
-        currentCalculationButtons.value.push(button);
+        currentCalculationButtons.value.push(button)
       }
     }
 
@@ -71,7 +71,7 @@ export default defineComponent({
       buttons,
       screenResult,
       handleClick
-    };
+    }
   }
 })
 </script>

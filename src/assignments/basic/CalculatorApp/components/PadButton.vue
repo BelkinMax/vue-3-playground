@@ -1,5 +1,5 @@
 <script>
-import { defineComponent, toRefs } from 'vue';
+import { defineComponent, toRefs } from 'vue'
 
 export default defineComponent({
   props: {
@@ -9,16 +9,16 @@ export default defineComponent({
     }
   },
   setup(props, { emit }) {
-    const { button } = toRefs(props);
+    const { button } = toRefs(props)
 
     function emitClick() {
-      emit('buttonClick', button.value);
+      emit('buttonClick', button.value)
     }
 
     return {
       button,
       emitClick
-    };
+    }
   }
 })
 </script>

@@ -7,7 +7,7 @@ export default defineComponent({
     const cardNumber = ref('')
     const cardName = ref('')
     const errors = reactive([true, true])
-    const hasErrors = computed(() => errors.some(Boolean));
+    const hasErrors = computed(() => errors.some(Boolean))
 
     function validateNumber(el) {
       if (!el.srcElement) return
