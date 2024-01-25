@@ -2,13 +2,18 @@
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-  setup() {
+  props: {
+    button: {
+      type: Object,
+      required: true
+    }
+  },
+  setup(props, { emit }) {
     function emitClick() {
-      // TODO: emit 'buttonClick'
+      emit('buttonClick', props.button);
     }
 
     return {
-      button: {},
       emitClick
     }
   }
