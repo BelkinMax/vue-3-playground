@@ -1,6 +1,7 @@
 # vue-3-playground
 
 This template should help get you started developing with Vue 3 in Vite.
+Beto
 
 ## Recommended IDE Setup
 
