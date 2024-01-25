@@ -12,7 +12,7 @@ export default defineComponent({
     let calculationResult = ref('');
     const calculationValues = computed(() => currentCalculationButtons.map((button) => button.value).join(''));
     const lastButton = computed(() => currentCalculationButtons.at(-1) || {});
-    const screenResult = computed(() => calculationResult.value || calculationValues);
+    const screenResult = computed(() => calculationResult.value || calculationValues.value);
     const buttons = reactive([
       { label: 'C', value: 'clear', type: 'clear', classes: 'col-span-3' },
       { label: '÷', value: '/', type: 'symbol', classes: '' },
