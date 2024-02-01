@@ -18,13 +18,17 @@ export default defineComponent({
 
     watch(question, async (newValue) => {
       if (newValue.includes('.')) {
-        toggleLoading();
-        const quoteResult = await api.fetchQuote(question.value);
-        addToHistory(newValue, quoteResult);
-        clearInput();
-        toggleLoading();
+        handleSubmit(newValue)
       }
     });
+
+    async function handleSubmit(newValue) {
+      toggleLoading()
+      const quoteResult = await api.fetchQuote(question.value)
+      addToHistory(newValue, quoteResult)
+      clearInput()
+      toggleLoading()
+    }
 
 
     function clearInput() {
