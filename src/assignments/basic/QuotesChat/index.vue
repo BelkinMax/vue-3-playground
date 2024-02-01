@@ -1,5 +1,5 @@
 <script>
-import { defineComponent } from 'vue'
+import { defineComponent, watch, ref } from 'vue'
 import { useApi } from './helpers/useApi'
 
 export default defineComponent({
@@ -7,20 +7,21 @@ export default defineComponent({
   setup() {
     const api = useApi()
     const history = []
-    let question = ''
-    let isLoading = false
+    let question = ref('')
+    let isLoading = ref(false)
 
-    // TODO: Implement watcher for question.includes('.')
-    //
-    // ? has dot
-    // - set loading true
-    // - await fetch
-    // - add to history
-    // - clear input
-    // - set loading false
+    watch(question, async (newValue) => {
+      if (!question.value.includes('.')) return
+      toggleLoading(true)
+      await api.fetchQuote(newValue).then((answer) => {
+        addToHistory(newValue, answer)
+      })
+      clearInput()
+      toggleLoading(false)
+    })
 
     function clearInput() {
-      question = ''
+      question.value = ''
     }
 
     function addToHistory(question, answer) {
@@ -36,7 +37,7 @@ export default defineComponent({
     }
 
     function toggleLoading(val) {
-      isLoading = val
+      isLoading.value = val
     }
 
     return {
