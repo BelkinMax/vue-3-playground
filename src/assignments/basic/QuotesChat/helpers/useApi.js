@@ -96,7 +96,7 @@ export function useApi() {
       response = await axios.get('https://api.api-ninjas.com/v1/quotes', {
         params: { category },
         headers: {
-          'X-Api-Key': 'API_KEY'
+          'X-Api-Key': import.meta.env.QUOTES_API_KEY
         }
       })
     } catch (e) {
