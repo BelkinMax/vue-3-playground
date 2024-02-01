@@ -1,5 +1,5 @@
 <script>
-import { defineComponent, watch, ref } from 'vue'
+import { defineComponent, watch, ref, onMounted, nextTick } from 'vue'
 import { useApi } from './helpers/useApi'
 
 export default defineComponent({
@@ -9,6 +9,11 @@ export default defineComponent({
     const history = []
     let question = ref('')
     let isLoading = ref(false)
+    const input = ref(null)
+
+    onMounted(() => {
+      focusInput()
+    })
 
     watch(question, async (newValue) => {
       if (!question.value.includes('.')) return
@@ -18,7 +23,16 @@ export default defineComponent({
       })
       clearInput()
       toggleLoading(false)
+      nextTick(() => {
+        focusInput()
+      })
     })
+
+    function focusInput () {
+      if (input.value) {
+        input.value.focus();
+      }
+    }
 
     function clearInput() {
       question.value = ''
@@ -43,7 +57,8 @@ export default defineComponent({
     return {
       history,
       question,
-      isLoading
+      isLoading,
+      input
     }
   }
 })
@@ -63,7 +78,7 @@ export default defineComponent({
 
     <div class="input-wrapper">
       <span class="hint">Tell me about what you want or love:</span>
-      <input v-model="question" :disabled="isLoading" class="input" />
+      <input v-model="question" ref="input" :disabled="isLoading" class="input" />
     </div>
   </div>
 </template>
