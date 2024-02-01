@@ -10,14 +10,18 @@ export default defineComponent({
     let question = ''
     let isLoading = false
 
+    // TODO: focus chat input on mounted
+
     // TODO: Implement watcher for question.includes('.')
     //
     // ? has dot
+    // ? has value
     // - set loading true
     // - await fetch
     // - add to history
     // - clear input
     // - set loading false
+    // - focus chat input
 
     function clearInput() {
       question = ''
