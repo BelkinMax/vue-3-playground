@@ -1,11 +1,11 @@
 <script>
-import { defineComponent, onMounted, ref, watch } from 'vue'
+import { defineComponent, onMounted, ref, watch, nextTick } from 'vue'
 import { useApi } from './helpers/useApi'
 
 export default defineComponent({
   name: 'QuotesChat',
   setup() {
-    // const inputRef = ref(null)
+    const inputRef = ref(null)
     const api = useApi()
     const history = []
     let question = ref('')
@@ -13,7 +13,7 @@ export default defineComponent({
 
     // TODO: focus chat input on mounted
     onMounted(() => {
-      // inputRef.value.focus()
+      inputRef.value.focus()
     })
 
     watch(question, async (newValue) => {
@@ -28,6 +28,8 @@ export default defineComponent({
       addToHistory(newValue, quoteResult)
       clearInput()
       toggleLoading()
+      await nextTick()
+      inputRef.value.focus()
     }
 
 
@@ -54,7 +56,8 @@ export default defineComponent({
     return {
       history,
       question,
-      isLoading
+      isLoading,
+      inputRef
     }
   }
 })
