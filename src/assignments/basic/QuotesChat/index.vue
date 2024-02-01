@@ -1,5 +1,5 @@
 <script>
-import { ref, defineComponent, onMounted, reactive, watch } from 'vue'
+import { ref, defineComponent, onMounted, reactive, watch, nextTick } from 'vue'
 import { useApi } from './helpers/useApi'
 
 export default defineComponent({
@@ -22,6 +22,7 @@ export default defineComponent({
       addToHistory(newQuestion, response);
       clearInput()
       toggleLoading(false);
+      await nextTick()
       input.value.focus()
     }
   })
