@@ -1,5 +1,5 @@
 <script>
-import { defineComponent, reactive, ref, onMounted, watch } from 'vue'
+import { defineComponent, reactive, ref, onMounted, watch, nextTick } from 'vue'
 import { useApi } from './helpers/useApi'
 
 export default defineComponent({
@@ -19,12 +19,12 @@ export default defineComponent({
       question,
       (value) => {
         if (!isLoading.value && value.includes('.')) {
-          handleEnter(value)
+          handleSearch(value)
         }
       }
     )
 
-    async function handleEnter (value) {
+    async function handleSearch (value) {
       toggleLoading(true)
 
       const answer = await api.fetchQuote(value);
@@ -34,6 +34,10 @@ export default defineComponent({
       clearInput();
 
       toggleLoading(false)
+
+      await nextTick()
+
+      focusInput()
     }
 
     function focusInput () {
