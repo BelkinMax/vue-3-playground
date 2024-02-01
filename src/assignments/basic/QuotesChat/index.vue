@@ -1,18 +1,37 @@
 <script>
-import { defineComponent } from 'vue'
+import {defineComponent, onMounted, reactive, ref, watch} from 'vue'
 import { useApi } from './helpers/useApi'
 
 export default defineComponent({
   name: 'QuotesChat',
   setup() {
-    const api = useApi()
-    const history = []
-    let question = ''
-    let isLoading = false
+    const api = useApi();
+    const history = reactive([]);
+    const question = ref('');
+    const isLoading = ref(false);
+    const input = ref(null)
+
+    onMounted(() => {
+      focusInput();
+    })
 
     // TODO: focus chat input on mounted
 
     // TODO: Implement watcher for question.includes('.')
+    watch(question, async (newQuestion) => {
+      if (newQuestion.includes('.')) {
+        toggleLoading(true);
+        try {
+          const res = await api.fetchQuote(newQuestion);
+          addToHistory(newQuestion, res);
+          clearInput();
+          focusInput();
+        } catch (error) {
+          console.log(`Error: ${error}`);
+        }
+        toggleLoading(false);
+      }
+    })
     //
     // ? has dot
     // ? has value
@@ -23,8 +42,12 @@ export default defineComponent({
     // - set loading false
     // - focus chat input
 
+    function focusInput () {
+      input.value.focus()
+    }
+
     function clearInput() {
-      question = ''
+      question.value = ''
     }
 
     function addToHistory(question, answer) {
@@ -40,13 +63,14 @@ export default defineComponent({
     }
 
     function toggleLoading(val) {
-      isLoading = val
+      isLoading.value = val
     }
 
     return {
       history,
       question,
-      isLoading
+      isLoading,
+      input
     }
   }
 })
@@ -66,7 +90,7 @@ export default defineComponent({
 
     <div class="input-wrapper">
       <span class="hint">Tell me about what you want or love:</span>
-      <input v-model="question" :disabled="isLoading" class="input" />
+      <input ref="input" v-model="question" :disabled="isLoading" class="input" />
     </div>
   </div>
 </template>
