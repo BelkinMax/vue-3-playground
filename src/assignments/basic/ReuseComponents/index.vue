@@ -1,12 +1,20 @@
 <script>
-import { defineComponent } from 'vue'
-// import { useApi } from './helpers/useApi'
+import { defineComponent, ref, onMounted } from 'vue'
+import { useApi } from './helpers/useApi'
+import ProductCard from './ProductCard.vue'
 
 export default defineComponent({
   name: 'ReuseComponents',
-  setup() {
-    //TODO:  const api = useApi();
-    const products = [] // await api.fetchProducts()
+  components: {
+    ProductCard
+  },
+  setup () {
+    const api = useApi();
+    const products = ref([]); 
+
+    onMounted(async () => {
+      products.value = await api.fetchProducts(6);
+    })
 
     function addProduct(product) {
       console.log(`${product.id}: ${product.title} added!`)
@@ -22,18 +30,12 @@ export default defineComponent({
 
 <template>
   <div class="product-grid">
-    <div class="product-card" v-for="product in products" :key="product.id">
-      <div class="thumbnail">
-        <img :src="product.image" :alt="product.title" />
-      </div>
-      <div class="content">
-        <h2 class="title">{{ product.title }}</h2>
-        <p class="price">{{ product.price }}$</p>
-      </div>
-      <div class="cta">
-        <button @click="addProduct">+</button>
-      </div>
-    </div>
+    <template v-for="product in products" :key="product.id">
+      <product-card
+        :product="product"
+        @productAdded="addProduct"
+      />
+    </template>
   </div>
 </template>
 
