@@ -1,5 +1,5 @@
 <script>
-import { defineComponent, ref, reactive, watchEffect } from 'vue'
+import { defineComponent, reactive, computed } from 'vue'
 
 export default defineComponent({
   name: 'FindShopCartBug',
@@ -24,11 +24,9 @@ export default defineComponent({
         quantity: 1
       }
     ])
-    const total = ref(0);
+    const total = computed(() => products.reduce((acc, product) => acc + product.price * product.quantity, 0) / 100)
 
-    watchEffect(() => {
-      total.value = products.reduce((acc, product) => acc + product.price * product.quantity, 0) / 100
-    })
+
 
     function increaseQuantity(product) {
       product.quantity += 1
