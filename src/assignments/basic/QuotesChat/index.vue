@@ -9,7 +9,7 @@ export default defineComponent({
     const history = []
     let question = ref('');
     let questionInput = ref(null);
-    let isLoading = false
+    let isLoading = ref(false);
 
      onMounted(() => {
          onFocusInput();
@@ -61,7 +61,7 @@ export default defineComponent({
     }
 
     function toggleLoading(val) {
-      isLoading = val
+      isLoading.value = val
     }
 
     return {
