@@ -1,5 +1,5 @@
 <script>
-import { defineComponent } from 'vue'
+import { defineComponent, ref, watch } from 'vue'
 import { useApi } from './helpers/useApi'
 
 export default defineComponent({
@@ -7,24 +7,33 @@ export default defineComponent({
   setup() {
     const api = useApi()
     const history = []
-    let question = ''
+    let question = ref('');
     let isLoading = false
 
-    // TODO: focus chat input on mounted
+    watch(
+        () => question.value.includes('.'),
+        (hasDot) => {
+            if (!hasDot || !question.value) {
+                return
+            }
+            onStartChatInteraction();
+      }
+    );
 
-    // TODO: Implement watcher for question.includes('.')
-    //
-    // ? has dot
-    // ? has value
-    // - set loading true
-    // - await fetch
-    // - add to history
-    // - clear input
-    // - set loading false
-    // - focus chat input
+    async function onStartChatInteraction () {
+      toggleLoading(true);
+      try {
+          const answer = await api.fetchQuote(question.value);
+          addToHistory(question.value, answer);
+      } catch (e) {
+          console.log(e);
+      }
+      clearInput();
+      toggleLoading(true);
+    }
 
     function clearInput() {
-      question = ''
+      question.value = ''
     }
 
     function addToHistory(question, answer) {
@@ -34,7 +43,7 @@ export default defineComponent({
 
       history.push({
         id: new Date().getTime(),
-        question,
+        question: question,
         answer
       })
     }
