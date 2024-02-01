@@ -1,5 +1,5 @@
 <script>
-import { defineComponent, onMounted, watch, ref, computed, reactive } from 'vue'
+import { defineComponent, onMounted, watch, ref, computed, reactive, nextTick } from 'vue'
 import { useApi } from './helpers/useApi'
 
 export default defineComponent({
@@ -23,7 +23,7 @@ export default defineComponent({
         const answer = await api.fetchQuote(question.value);
         addToHistory(question.value, answer);
         clearInput();
-        focusInput();
+        nextTick(focusInput);
       } catch (err) {
         console.error('ERROR :::', err);
       } finally {
