@@ -1,4 +1,5 @@
 import axios from 'axios'
+const apiKey = import.meta.env.VITE_API_KEY
 
 const TAGS = Object.freeze([
   'age',
@@ -96,7 +97,7 @@ export function useApi() {
       response = await axios.get('https://api.api-ninjas.com/v1/quotes', {
         params: { category },
         headers: {
-          'X-Api-Key': 'API_KEY'
+          'X-Api-Key': apiKey
         }
       })
     } catch (e) {
