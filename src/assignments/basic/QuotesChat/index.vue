@@ -1,22 +1,34 @@
 <script>
-import { defineComponent } from 'vue'
+import { ref, defineComponent, onMounted, reactive, watch } from 'vue'
 import { useApi } from './helpers/useApi'
 
 export default defineComponent({
   name: 'QuotesChat',
   setup() {
+    const input = ref(null)
     const api = useApi()
-    const history = []
-    const question = ''
+    const history = reactive([])
+    const question = ref('')
     let isLoading = false
 
-    // TODO: Implement watcher
-    // if (question.includes('.')) {
-    //   - set loading true
-    //   - fetch
-    //   - add to history
-    //   - set loading false
-    // }
+    onMounted(() => {
+      input.value.focus()
+    })
+
+  watch(question, async (newQuestion) => {
+    if (newQuestion.includes('.') && newQuestion.length > 1) {
+      toggleLoading(true);
+      const response = await api.fetchQuote(newQuestion);
+      addToHistory(newQuestion, response);
+      clearInput()
+      toggleLoading(false);
+      input.value.focus()
+    }
+  })
+
+    function clearInput() {
+      question.value = ''
+    }
 
     function addToHistory(question, answer) {
       if (history.length > 3) {
@@ -37,7 +49,8 @@ export default defineComponent({
     return {
       history,
       question,
-      isLoading
+      isLoading,
+      input
     }
   }
 })
@@ -57,7 +70,7 @@ export default defineComponent({
 
     <div class="input-wrapper">
       <span class="hint">Tell me about what you want or love:</span>
-      <input v-model="question" :disabled="isLoading" class="input" />
+      <input ref="input" v-model="question" :disabled="isLoading" class="input" />
     </div>
   </div>
 </template>
