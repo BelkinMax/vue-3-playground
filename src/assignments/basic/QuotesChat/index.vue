@@ -9,7 +9,7 @@ export default defineComponent({
     const api = useApi()
     const history = reactive([])
     const question = ref('')
-    let isLoading = false
+    let isLoading = ref(false)
 
     onMounted(() => {
       input.value.focus()
@@ -43,7 +43,7 @@ export default defineComponent({
     }
 
     function toggleLoading(val) {
-      isLoading = val
+      isLoading.value = val
     }
 
     return {
