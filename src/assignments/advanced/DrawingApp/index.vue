@@ -42,23 +42,14 @@ export default defineComponent({
       canvasContext = canvasElement.value.getContext('2d');
     })
 
-    // TODO: Your code here
-    // 1. Get isOutside and mouse position inside element from vueuse/useMouseInElement
     const { elementX, elementY, isOutside } = useMouseInElement(canvasElement)
 
-      // 2. Call draw line when:
-      //  - elementX or elementY have changed
-      //  - the pointer is inside element
-      
-      // 3. Add condition to draw line. It should draw only when mouse is pressed.
-      //    Use vueuse/useMousePressed
     watch([elementX, elementY], async ([newPositionX, newPositionY]) => {
       if(!isOutside.value && pressed.value) {
         drawLine([newPositionX, newPositionY])
       }
     })
 
-    // 4. Reset startLine if mouse is not pressed (try use vueuse/whenever)
     whenever(pressed, () => setStartLine() )
 
 
