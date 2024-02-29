@@ -13,7 +13,7 @@ export default defineComponent({
     const canvasWrapper = templateRef('canvasWrapper');
     const canvasElement = templateRef('canvasElement');
     const { width: canvasWidth, height: canvasHeight } = useElementSize(canvasWrapper);
-    const { x, y } = useMouseInElement(canvasWrapper);
+    const { elementX, elementY } = useMouseInElement(canvasWrapper);
     const { pressed } = useMousePressed(canvasWrapper)
     let canvasContext, lineStart;
 
@@ -46,8 +46,8 @@ export default defineComponent({
     })
 
     watch(
-        (x, y),
-        () => { drawLine([x.value, y.value ]) }
+        (elementX, elementY),
+        () => { drawLine([elementX.value, elementY.value ]) }
     )
 
     // TODO: Your code here

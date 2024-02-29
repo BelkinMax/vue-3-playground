@@ -1,9 +1,16 @@
 <script>
 import { defineComponent, reactive } from 'vue'
+import useShoppingCart from './composables/shoppingCart.js';
 
 export default defineComponent({
   name: 'ShoppingCart',
   setup() {
+    const {
+        productCart: cart,
+        total,
+        addToCart,
+        removeFromCart
+    } = useShoppingCart();
     const products = reactive([
       { id: 1, name: 'Mouse - Logitech MX Master 3S', price: 9220 },
       { id: 2, name: 'Keyboard - Logitech MX Keys', price: 7990 },
@@ -12,10 +19,10 @@ export default defineComponent({
 
     return {
       products,
-      cart: [],
-      total: 0,
-      addToCart: () => {},
-      removeFromCart: () => {}
+      cart,
+      total,
+      addToCart,
+      removeFromCart
     }
   }
 })
