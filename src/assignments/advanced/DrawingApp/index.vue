@@ -1,8 +1,11 @@
 <script>
-import { defineComponent, watch, onMounted } from 'vue';
+import { defineComponent, watch, onMounted, ref } from 'vue';
 import {
   useElementSize,
-  templateRef
+  templateRef,
+  useMouseInElement,
+  useMousePressed,
+  whenever
 } from '@vueuse/core'
 
 export default defineComponent({
@@ -12,7 +15,7 @@ export default defineComponent({
     const canvasElement = templateRef('canvasElement');
     const { width: canvasWidth, height: canvasHeight } = useElementSize(canvasWrapper);
     let canvasContext, lineStart;
-
+    const color = ref('#000000'); // Variable reactiva para el color
     function setStartLine(position) {
       lineStart = position || null;
     }
@@ -22,11 +25,11 @@ export default defineComponent({
           setStartLine(position);
           return;
         }
-
         canvasContext.beginPath();
         canvasContext.moveTo(...lineStart);
         canvasContext.lineTo(...position);
         canvasContext.stroke();
+        canvasContext.strokeStyle = color.value;
         setStartLine(position);
       }
     }
@@ -39,24 +42,28 @@ export default defineComponent({
       canvasContext = canvasElement.value.getContext('2d');
     })
 
-    // TODO: Your code here
-    // 1. Get isOutside and mouse position inside element from vueuse/useMouseInElement
+    const { elementX, elementY, isOutside } = useMouseInElement(canvasElement);
+    const { pressed } = useMousePressed();
 
-    // 2. Call draw line when:
-    //  - elementX or elementY have changed
-    //  - the pointer is inside element
+    watch([elementX, elementY, pressed], () => {
+      if (!pressed.value) setStartLine(null);
+      if (!isOutside.value && pressed.value) {
+        drawLine([elementX.value, elementY.value]);
 
-    // 3. Add condition to draw line. It should draw only when mouse is pressed.
-    //    Use vueuse/useMousePressed
 
-    // 4. Reset startLine if mouse is not pressed (try use vueuse/whenever)
+      }
+    }, { immediate: true });
 
-    // BONUS: 5. Implement color picker
+    whenever(pressed, (newValue) => {
+      console.log(newValue)
+      if (!newValue) setStartLine(null);
+    });
 
     return {
       canvasWidth,
       canvasHeight,
-      clearCanvas
+      clearCanvas,
+      color
     }
   }
 })
@@ -75,7 +82,7 @@ export default defineComponent({
     >
       Your browser does not support the HTML canvas tag.
     </canvas>
-
+    <input type="color" v-model="color" />
     <button class="clear-button" @click="clearCanvas">Clear</button>
   </div>
 </template>
