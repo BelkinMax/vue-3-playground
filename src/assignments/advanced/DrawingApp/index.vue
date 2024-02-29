@@ -65,7 +65,7 @@ export default defineComponent({
     // 4. Reset startLine if mouse is not pressed (try use vueuse/whenever)
     whenever(
       () => !pressed.value,
-      () => clearCanvas()
+      () => setStartLine()
     )
 
     // BONUS: 5. Implement color picker
