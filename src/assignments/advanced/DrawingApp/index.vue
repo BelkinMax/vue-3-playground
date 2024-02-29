@@ -1,13 +1,18 @@
 <script>
-import { defineComponent, watch, onMounted } from 'vue';
+import { defineComponent, watch, onMounted, ref } from 'vue';
 import {
   useElementSize,
-  templateRef
+  templateRef,
+  useMouseInElement,
+  useMousePressed,
+  whenever
 } from '@vueuse/core'
 
 export default defineComponent({
   name: 'DrawingApp',
   setup() {
+    const selectedColor = ref('#000000');
+    const colorPicker = templateRef('colorPicker');
     const canvasWrapper = templateRef('canvasWrapper');
     const canvasElement = templateRef('canvasElement');
     const { width: canvasWidth, height: canvasHeight } = useElementSize(canvasWrapper);
@@ -22,7 +27,6 @@ export default defineComponent({
           setStartLine(position);
           return;
         }
-
         canvasContext.beginPath();
         canvasContext.moveTo(...lineStart);
         canvasContext.lineTo(...position);
@@ -41,21 +45,29 @@ export default defineComponent({
 
     // TODO: Your code here
     // 1. Get isOutside and mouse position inside element from vueuse/useMouseInElement
-
+    const { elementX, elementY, isOutside } = useMouseInElement(canvasElement)
     // 2. Call draw line when:
     //  - elementX or elementY have changed
     //  - the pointer is inside element
-
+    watch([elementX, elementY], ([newX, newY]) => {
+      if (!isOutside.value && pressed.value) {
+        drawLine([newX, newY]);
+      }
+    });
+    
     // 3. Add condition to draw line. It should draw only when mouse is pressed.
     //    Use vueuse/useMousePressed
+    const { pressed } = useMousePressed()
 
     // 4. Reset startLine if mouse is not pressed (try use vueuse/whenever)
+    whenever(() => !pressed.value, () => setStartLine());
 
     // BONUS: 5. Implement color picker
-
+    watch(selectedColor, (color) => canvasContext.strokeStyle = color);
     return {
       canvasWidth,
       canvasHeight,
+      selectedColor,
       clearCanvas
     }
   }
@@ -67,6 +79,8 @@ export default defineComponent({
     ref="canvasWrapper"
     class="canvas-wrapper"
   >
+  <input type="color" id="colorPicker" name="colorPicker" ref="colorPicker" v-model="selectedColor"/>
+  <label for="colorPicker">Color Picker</label>
     <canvas
       ref="canvasElement"
       id="canvas"
@@ -93,5 +107,14 @@ export default defineComponent({
 
 .clear-button {
   width: 100%;
+}
+
+.color {
+  margin-right: 5px;
+  width: 20px;
+  height: 20px;
+  &--selected {
+    border: 3px solid black;
+  }
 }
 </style>
