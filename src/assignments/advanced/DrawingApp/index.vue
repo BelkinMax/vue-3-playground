@@ -1,5 +1,6 @@
 <script>
-import { defineComponent, watch, onMounted } from 'vue';
+import { defineComponent, watch, onMounted, ref } from 'vue';
+import { useMouseInElement, useMousePressed, whenever } from '@vueuse/core'
 import {
   useElementSize,
   templateRef
@@ -11,11 +12,13 @@ export default defineComponent({
     const canvasWrapper = templateRef('canvasWrapper');
     const canvasElement = templateRef('canvasElement');
     const { width: canvasWidth, height: canvasHeight } = useElementSize(canvasWrapper);
+    const { pressed } = useMousePressed({ touch: false, target: canvasElement })
     let canvasContext, lineStart;
 
     function setStartLine(position) {
       lineStart = position || null;
     }
+
     function drawLine (position) {
       if (canvasContext) {
         if (!lineStart) {
@@ -41,15 +44,25 @@ export default defineComponent({
 
     // TODO: Your code here
     // 1. Get isOutside and mouse position inside element from vueuse/useMouseInElement
+    const { x, y, isOutside } = useMouseInElement(canvasElement)
+    const elementX = ref(x)
+    const elementY = ref(y)
 
-    // 2. Call draw line when:
-    //  - elementX or elementY have changed
-    //  - the pointer is inside element
-
-    // 3. Add condition to draw line. It should draw only when mouse is pressed.
-    //    Use vueuse/useMousePressed
+      // 2. Call draw line when:
+      //  - elementX or elementY have changed
+      //  - the pointer is inside element
+      
+      // 3. Add condition to draw line. It should draw only when mouse is pressed.
+      //    Use vueuse/useMousePressed
+    watch([elementX, elementY], async ([newPositionX, newPositionY]) => {
+      if(!isOutside.value && pressed.value) {
+        drawLine([newPositionX, newPositionY])
+      }
+    })
 
     // 4. Reset startLine if mouse is not pressed (try use vueuse/whenever)
+    whenever(pressed, () => { console.log(pressed.value); setStartLine() })
+
 
     // BONUS: 5. Implement color picker
 
