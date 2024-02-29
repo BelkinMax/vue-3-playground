@@ -1,5 +1,5 @@
 <script>
-import { defineComponent, watch, onMounted } from 'vue';
+import { defineComponent, watch, onMounted, ref } from 'vue';
 import {
   useElementSize,
   templateRef,
@@ -16,6 +16,7 @@ export default defineComponent({
     const { width: canvasWidth, height: canvasHeight } = useElementSize(canvasWrapper);
     const { isOutside, elementX, elementY } = useMouseInElement(canvasWrapper);
     const { pressed } = useMousePressed();
+    const color = ref('#000000');
     let canvasContext, lineStart;
 
     function setStartLine(position) {
@@ -32,6 +33,7 @@ export default defineComponent({
         canvasContext.beginPath();
         canvasContext.moveTo(...lineStart);
         canvasContext.lineTo(...position);
+        canvasContext.strokeStyle = color.value;
         canvasContext.stroke();
         setStartLine(position);
       }
@@ -53,11 +55,13 @@ export default defineComponent({
     });
 
     whenever(() => !pressed.value, () => setStartLine());
+    whenever(() => !color.value, () => color.value = '#000000');
 
     return {
       canvasWidth,
       canvasHeight,
-      clearCanvas
+      clearCanvas,
+      color
     }
   }
 })
@@ -68,6 +72,7 @@ export default defineComponent({
     ref="canvasWrapper"
     class="canvas-wrapper"
   >
+    <input type="text" v-model="color"/>
     <canvas
       ref="canvasElement"
       id="canvas"
