@@ -1,5 +1,5 @@
 <script>
-import { defineComponent, watch, onMounted } from 'vue';
+import { ref, defineComponent, watch, onMounted } from 'vue';
 import {
   useElementSize,
   templateRef,
@@ -11,6 +11,7 @@ import {
 export default defineComponent({
   name: 'DrawingApp',
   setup() {
+    const color = ref('Black')
     const canvasWrapper = templateRef('canvasWrapper');
     const canvasElement = templateRef('canvasElement');
     const { width: canvasWidth, height: canvasHeight } = useElementSize(canvasWrapper);
@@ -29,6 +30,7 @@ export default defineComponent({
         canvasContext.beginPath();
         canvasContext.moveTo(...lineStart);
         canvasContext.lineTo(...position);
+        canvasContext.strokeStyle = color.value;
         canvasContext.stroke();
         setStartLine(position);
       }
@@ -69,9 +71,10 @@ export default defineComponent({
     )
 
     // BONUS: 5. Implement color picker
-    //  NO
+    // input selector izi xd
 
     return {
+      color,
       canvasWidth,
       canvasHeight,
       clearCanvas
@@ -94,7 +97,16 @@ export default defineComponent({
       Your browser does not support the HTML canvas tag.
     </canvas>
 
-    <button class="clear-button" @click="clearCanvas">Clear</button>
+    <div class="clear-button">
+      <select v-model="color">
+        <option value="Black">Negro</option>
+        <option value="Red">Rojo</option>
+        <option value="Blue">Azul</option>
+        <option value="Yellow">Amarillo</option>
+        <option value="Green">Verde</option>
+      </select>
+      <button @click="clearCanvas">Clear</button>
+    </div>
   </div>
 </template>
 
