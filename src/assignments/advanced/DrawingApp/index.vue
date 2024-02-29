@@ -61,7 +61,7 @@ export default defineComponent({
     })
 
     // 4. Reset startLine if mouse is not pressed (try use vueuse/whenever)
-    whenever(pressed, () => { console.log(pressed.value); setStartLine() })
+    whenever(pressed, () => { setStartLine() })
 
 
     // BONUS: 5. Implement color picker
