@@ -6,18 +6,17 @@
  */
 import { reactive, computed } from "vue"
 
+const cart = reactive([])
+const total = computed(() => cart.reduce((acc, product) => acc + product.price,0))
+
 export default function useShoppingCart() {
-  let cart = reactive([])
-  const total = computed(() => cart.reduce((acc, product) => {
-    return acc + product.price
-  },0))
   return {
     addToCart (product) {
       cart.push(product)
       
     },
     removeFromCart (productId) {
-      cart.splice(cart.indexOf(cart.findIndex(product => product.id === productId)), 1)
+      cart.splice(cart.indexOf(cart.findIndex(product => product.id === productId)), 1);
     },
     cart,
     total
