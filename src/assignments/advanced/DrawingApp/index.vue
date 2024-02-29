@@ -15,7 +15,7 @@ export default defineComponent({
     const canvasElement = templateRef('canvasElement');
     const { width: canvasWidth, height: canvasHeight } = useElementSize(canvasWrapper);
     let canvasContext, lineStart;
-    const color = ref('#000000'); // Variable reactiva para el color
+    const color = ref('#000000');
     function setStartLine(position) {
       lineStart = position || null;
     }
@@ -54,10 +54,7 @@ export default defineComponent({
       }
     }, { immediate: true });
 
-    whenever(pressed, (newValue) => {
-      console.log(newValue)
-      if (!newValue) setStartLine(null);
-    });
+    //whenever(pressed, () => setStartLine(null))
 
     return {
       canvasWidth,
