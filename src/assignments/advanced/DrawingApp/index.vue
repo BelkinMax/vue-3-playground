@@ -72,7 +72,7 @@ export default defineComponent({
     ref="canvasWrapper"
     class="canvas-wrapper"
   >
-    <input type="text" v-model="color"/>
+    <input type="color" v-model="color"/>
     <canvas
       ref="canvasElement"
       id="canvas"
