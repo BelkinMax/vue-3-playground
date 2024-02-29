@@ -4,7 +4,22 @@
  * @property {string} name
  * @property {number} price
  */
+import { reactive, computed } from "vue"
 
 export default function useShoppingCart() {
-  return {}
+  let cart = reactive([])
+  const total = computed(() => cart.reduce((acc, product) => {
+    return acc + product.price
+  },0))
+  return {
+    addToCart (product) {
+      cart.push(product)
+      
+    },
+    removeFromCart (productId) {
+      cart.splice(cart.indexOf(cart.findIndex(product => product.id === productId)), 1)
+    },
+    cart,
+    total
+  }
 }

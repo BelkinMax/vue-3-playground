@@ -44,9 +44,7 @@ export default defineComponent({
 
     // TODO: Your code here
     // 1. Get isOutside and mouse position inside element from vueuse/useMouseInElement
-    const { x, y, isOutside } = useMouseInElement(canvasElement)
-    const elementX = ref(x)
-    const elementY = ref(y)
+    const { elementX, elementY, isOutside } = useMouseInElement(canvasElement)
 
       // 2. Call draw line when:
       //  - elementX or elementY have changed
@@ -61,7 +59,7 @@ export default defineComponent({
     })
 
     // 4. Reset startLine if mouse is not pressed (try use vueuse/whenever)
-    whenever(pressed, () => { setStartLine() })
+    whenever(pressed, () => setStartLine() )
 
 
     // BONUS: 5. Implement color picker
