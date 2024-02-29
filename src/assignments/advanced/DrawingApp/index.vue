@@ -15,7 +15,7 @@ export default defineComponent({
     const canvasElement = templateRef('canvasElement');
     const { width: canvasWidth, height: canvasHeight } = useElementSize(canvasWrapper);
     const { isOutside, elementX, elementY } = useMouseInElement(canvasWrapper);
-    const isMousePressed = useMousePressed();
+    const { pressed } = useMousePressed();
     let canvasContext, lineStart;
 
     function setStartLine(position) {
@@ -46,14 +46,13 @@ export default defineComponent({
     })
 
 
-    watch([elementX, elementY, isMousePressed.pressed], () => {
-      console.log(elementX.value, elementY.value, isMousePressed.pressed.value)
-      if (!isOutside.value && isMousePressed.pressed.value) {
+    watch([elementX, elementY, pressed], () => {
+      if (!isOutside.value && pressed.value) {
         drawLine([elementX.value, elementY.value]);
-      } else {
-        setStartLine();
       }
     });
+
+    whenever(() => !pressed.value, () => setStartLine());
 
     return {
       canvasWidth,
