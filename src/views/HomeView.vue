@@ -47,7 +47,8 @@ export default defineComponent({
             ['📄 Vuex Store', 'https://bluuweb.github.io/vue-udemy/21-vuex-composition/#api']
           ],
           [
-            ['⚙️ Drawing App', '/drawing-app']
+            ['⚙️ Drawing App', '/drawing-app'],
+            ['⚙️ Shopping Cart', '/shopping-cart']
           ]
         ]
       ],

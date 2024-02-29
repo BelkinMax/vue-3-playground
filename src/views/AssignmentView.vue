@@ -17,7 +17,8 @@ export default defineComponent({
       'calculator-app': defineAsyncComponent(() => import('@/assignments/basic/CalculatorApp/index.vue')),
       'quotes-chat': defineAsyncComponent(() => import('@/assignments/basic/QuotesChat/index.vue')),
       'find-shop-cart-bug': defineAsyncComponent(() => import('@/assignments/basic/FindShopCartBug/index.vue')),
-      'drawing-app': defineAsyncComponent(() => import('@/assignments/advanced/DrawingApp/index.vue'))
+      'drawing-app': defineAsyncComponent(() => import('@/assignments/advanced/DrawingApp/index.vue')),
+      'shopping-cart': defineAsyncComponent(() => import('@/assignments/advanced/ShoppingCart/index.vue'))
     }
     const assignmentComponent = assignmentComponentMap[params.assignmentId]
 
