@@ -45,6 +45,9 @@ export default defineComponent({
             ['📄 Directives', 'https://vuejs.org/api/built-in-directives.html#built-in-directives'],
             ['📄 Plugins', 'https://vuejs.org/guide/reusability/plugins.html#plugins'],
             ['📄 Vuex Store', 'https://bluuweb.github.io/vue-udemy/21-vuex-composition/#api']
+          ],
+          [
+            ['⚙️ Drawing App', '/drawing-app']
           ]
         ]
       ],

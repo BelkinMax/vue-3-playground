@@ -16,7 +16,8 @@ export default defineComponent({
       'credit-card-form': defineAsyncComponent(() => import('@/assignments/basic/CreditCardForm/index.vue')),
       'calculator-app': defineAsyncComponent(() => import('@/assignments/basic/CalculatorApp/index.vue')),
       'quotes-chat': defineAsyncComponent(() => import('@/assignments/basic/QuotesChat/index.vue')),
-      'find-shop-cart-bug': defineAsyncComponent(() => import('@/assignments/basic/FindShopCartBug/index.vue'))
+      'find-shop-cart-bug': defineAsyncComponent(() => import('@/assignments/basic/FindShopCartBug/index.vue')),
+      'drawing-app': defineAsyncComponent(() => import('@/assignments/advanced/DrawingApp/index.vue'))
     }
     const assignmentComponent = assignmentComponentMap[params.assignmentId]
 
@@ -39,5 +40,9 @@ export default defineComponent({
 .navigation {
   padding: 0 20px;
   margin-bottom: 20px;
+}
+.assignment {
+  width: 100%;
+  height: 100%;
 }
 </style>
