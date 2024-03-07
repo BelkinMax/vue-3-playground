@@ -1,5 +1,5 @@
 <script>
-import { defineComponent } from 'vue'
+import { defineComponent, ref, watch, onMounted, nextTick } from 'vue'
 import { useApi } from './helpers/useApi'
 
 export default defineComponent({
@@ -7,24 +7,45 @@ export default defineComponent({
   setup() {
     const api = useApi()
     const history = []
-    let question = ''
-    let isLoading = false
+    let question = ref('');
+    let questionInput = ref(null);
+    let isLoading = ref(false);
 
-    // TODO: focus chat input on mounted
+     onMounted(() => {
+         onFocusInput();
+     });
 
-    // TODO: Implement watcher for question.includes('.')
-    //
-    // ? has dot
-    // ? has value
-    // - set loading true
-    // - await fetch
-    // - add to history
-    // - clear input
-    // - set loading false
-    // - focus chat input
+    watch(
+        () => question.value.includes('.'),
+        (hasDot) => {
+            if (!hasDot || !question.value) {
+                return
+            }
+            onStartChatInteraction();
+      }
+    );
+
+    async function onStartChatInteraction () {
+      toggleLoading(true);
+      try {
+          const answer = await api.fetchQuote(question.value);
+          addToHistory(question.value, answer);
+      } catch (e) {
+          console.log(e);
+      }
+      clearInput();
+      toggleLoading(true);
+      await nextTick();
+      onFocusInput();
+    }
+
+    function onFocusInput() {
+        questionInput.value.focus();
+    }
+
 
     function clearInput() {
-      question = ''
+      question.value = ''
     }
 
     function addToHistory(question, answer) {
@@ -34,19 +55,20 @@ export default defineComponent({
 
       history.push({
         id: new Date().getTime(),
-        question,
+        question: question,
         answer
       })
     }
 
     function toggleLoading(val) {
-      isLoading = val
+      isLoading.value = val
     }
 
     return {
       history,
       question,
-      isLoading
+      isLoading,
+      questionInput
     }
   }
 })
@@ -66,7 +88,7 @@ export default defineComponent({
 
     <div class="input-wrapper">
       <span class="hint">Tell me about what you want or love:</span>
-      <input v-model="question" :disabled="isLoading" class="input" />
+      <input ref="questionInput" v-model="question" :disabled="isLoading" class="input" />
     </div>
   </div>
 </template>
