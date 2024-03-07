@@ -28,6 +28,8 @@ export default defineComponent({
   <main class="main">
     <RouterView />
   </main>
+
+  <div id="global-alert"></div>
 </template>
 
 <style lang="scss" scoped>
