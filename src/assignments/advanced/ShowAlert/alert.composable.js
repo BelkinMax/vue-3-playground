@@ -4,9 +4,20 @@ import { useStorage } from '@vueuse/core';
 export default function useAlert (alertKey, initialData, validator) {
   // TODO: use vueuse/useStorage
 
+  const data = useStorage(alertKey, initialData, localStorage, {
+    serializer: {
+      read: (v) => v ? JSON.parse(v) : null,
+      write: (v) => JSON.stringify(v),
+    }
+  });
+
   return {
-    data: {},
+    data,
     isRequired: true,
-    updateData: () => {}
+    updateData: () => {
+      if (validator(data)) {
+        data.value.clicks++
+      }
+    }
   }
 }

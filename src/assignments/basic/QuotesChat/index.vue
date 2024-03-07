@@ -1,5 +1,5 @@
 <script>
-import { defineComponent } from 'vue'
+import { defineComponent, onMounted, ref, watch } from 'vue'
 import { useApi } from './helpers/useApi'
 
 export default defineComponent({
@@ -7,24 +7,39 @@ export default defineComponent({
   setup() {
     const api = useApi()
     const history = []
-    let question = ''
+    let question = ref('')
     let isLoading = false
 
-    // TODO: focus chat input on mounted
+    const input = ref('')
 
-    // TODO: Implement watcher for question.includes('.')
-    //
-    // ? has dot
-    // ? has value
-    // - set loading true
-    // - await fetch
-    // - add to history
-    // - clear input
-    // - set loading false
-    // - focus chat input
+    onMounted(() => {
+      _focusChatInput();
+    });
+
+    watch(question, async (newVal) => {
+      if(newVal && newVal.includes('.')) {
+        toggleLoading(true);
+
+        const answer = await api.fetchQuote(newVal);
+
+        addToHistory(newVal, answer);
+
+        clearInput();
+
+        toggleLoading(false);
+
+        _focusChatInput();
+      }
+    });
+
+    function _focusChatInput() {
+      if (input.value) {
+        input.value.focus();
+      }
+    }
 
     function clearInput() {
-      question = ''
+      question.value = ''
     }
 
     function addToHistory(question, answer) {
@@ -46,7 +61,8 @@ export default defineComponent({
     return {
       history,
       question,
-      isLoading
+      isLoading,
+      input
     }
   }
 })
@@ -66,7 +82,7 @@ export default defineComponent({
 
     <div class="input-wrapper">
       <span class="hint">Tell me about what you want or love:</span>
-      <input v-model="question" :disabled="isLoading" class="input" />
+      <input v-model="question" :disabled="isLoading" class="input" ref="input"/>
     </div>
   </div>
 </template>
