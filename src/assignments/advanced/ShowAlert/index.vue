@@ -1,5 +1,5 @@
 <script>
-import { defineComponent } from 'vue'
+import { defineComponent, computed } from 'vue'
 import TheAlert from './components/TheAlert.vue';
 import useAlert from './alert.composable.js'
 
@@ -22,10 +22,16 @@ export default defineComponent({
     *  3. If alert was closed show non removable error alert inside the page
     */
 
+    const clicksLeft = computed(() => {
+      return data?.value.clicks ? 5 - data?.value.clicks : 5;
+    });
+
     return {
       isRequired,
-      clicksLeft: 5,
-      onOk: () => {},
+      clicksLeft,
+      onOk: () => {
+        updateData();
+      },
       onClose: () => {}
     }
   }
@@ -33,14 +39,16 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="show-alert">
-    <TheAlert
-      kind="error"
-      is-removable
-      @ok="onOk"
-      @close="onClose"
-    >
-      Click "Ok" {{ clicksLeft }} times
-    </TheAlert>
-  </div>
+  <Teleport to="#global-alert" :disabled="clicksLeft === 0">
+    <div class="show-alert">
+      <TheAlert
+        kind="error"
+        :is-removable="clicksLeft > 0"
+        @ok="onOk"
+        @close="onClose"
+      >
+        Click "Ok" {{ clicksLeft }} times
+      </TheAlert>
+    </div>
+  </Teleport>
 </template>
