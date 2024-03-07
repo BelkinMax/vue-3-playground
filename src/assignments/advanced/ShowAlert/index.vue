@@ -1,5 +1,5 @@
 <script>
-import { defineComponent } from 'vue'
+import {computed, defineComponent, ref} from 'vue'
 import TheAlert from './components/TheAlert.vue';
 import useAlert from './alert.composable.js'
 
@@ -9,11 +9,23 @@ export default defineComponent({
     TheAlert
   },
   setup() {
-    const { data, isRequired, updateData } = useAlert(
-      'clicks-alert',
-      { clicks: 0 },
-      (data) => { return data?.value.clicks < 5 }
+    const {data, isRequired, updateData} = useAlert(
+        'clicks-alert',
+        {clicks: 0},
+        (data) => {
+          return data?.value.clicks < 5
+        }
     );
+    const clicksLeft = computed(() => 5 - data.value?.clicks);
+    const isError = ref(false);
+
+    const onOk = () => {
+      updateData({clicks: data.value.clicks + 1})
+    };
+
+    const onClose = () => {
+      isError.value = true;
+    };
 
     /*
     *  TODO: https://vuejs.org/guide/built-ins/teleport.html
@@ -24,9 +36,10 @@ export default defineComponent({
 
     return {
       isRequired,
-      clicksLeft: 5,
-      onOk: () => {},
-      onClose: () => {}
+      clicksLeft,
+      isError,
+      onOk,
+      onClose
     }
   }
 })
@@ -34,13 +47,15 @@ export default defineComponent({
 
 <template>
   <div class="show-alert">
-    <TheAlert
-      kind="error"
-      is-removable
-      @ok="onOk"
-      @close="onClose"
-    >
-      Click "Ok" {{ clicksLeft }} times
-    </TheAlert>
+    <Teleport v-if="isRequired" to="#global-alert" :disabled="isError">
+      <TheAlert
+          :kind="isError ? 'error' : 'warning'"
+          :is-removable="!isError"
+          @ok="onOk"
+          @close="onClose"
+      >
+        Click "Ok" {{ clicksLeft }} times
+      </TheAlert>
+    </Teleport>
   </div>
 </template>
