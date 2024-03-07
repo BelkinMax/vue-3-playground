@@ -14,7 +14,7 @@ export default defineComponent({
     const isTeleported = ref(false);
     const { data, isRequired, updateData } = useAlert(
       'clicks-alert',
-      { clicks: 0, clicksLeft: 5 },
+      { clicks: 0 },
       (data) => { return data?.value.clicks < 5 }
     );
 
