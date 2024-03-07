@@ -1,30 +1,51 @@
 <script>
-import { defineComponent } from 'vue'
+import { defineComponent, reactive, ref, onMounted, watch, nextTick } from 'vue'
 import { useApi } from './helpers/useApi'
 
 export default defineComponent({
   name: 'QuotesChat',
   setup() {
     const api = useApi()
-    const history = []
-    let question = ''
-    let isLoading = false
+    const history = reactive([])
+    let question = ref('')
+    let refInput = ref(null)
+    let isLoading = ref(false)
 
-    // TODO: focus chat input on mounted
+    onMounted(() => {
+      focusInput()
+    })
 
-    // TODO: Implement watcher for question.includes('.')
-    //
-    // ? has dot
-    // ? has value
-    // - set loading true
-    // - await fetch
-    // - add to history
-    // - clear input
-    // - set loading false
-    // - focus chat input
+    watch(
+      question,
+      (value) => {
+        if (!isLoading.value && value.includes('.')) {
+          handleSearch(value)
+        }
+      }
+    )
+
+    async function handleSearch (value) {
+      toggleLoading(true)
+
+      const answer = await api.fetchQuote(value);
+
+      addToHistory(value, answer);
+
+      clearInput();
+
+      toggleLoading(false)
+
+      await nextTick()
+
+      focusInput()
+    }
+
+    function focusInput () {
+      refInput.value.focus();
+    }
 
     function clearInput() {
-      question = ''
+      question.value = ''
     }
 
     function addToHistory(question, answer) {
@@ -40,13 +61,15 @@ export default defineComponent({
     }
 
     function toggleLoading(val) {
-      isLoading = val
+      isLoading.value = val
     }
 
     return {
+      refInput,
       history,
       question,
-      isLoading
+      isLoading,
+      handleEnter
     }
   }
 })
@@ -66,7 +89,13 @@ export default defineComponent({
 
     <div class="input-wrapper">
       <span class="hint">Tell me about what you want or love:</span>
-      <input v-model="question" :disabled="isLoading" class="input" />
+      <input
+        ref="refInput"
+        v-model="question"
+        :disabled="isLoading"
+        class="input"
+        @keydown.enter="handleEnter"  
+      />
     </div>
   </div>
 </template>

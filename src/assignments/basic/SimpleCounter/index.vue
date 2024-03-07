@@ -1,5 +1,5 @@
 <script>
-import { defineComponent } from 'vue'
+import { defineComponent, ref, reactive, watch } from 'vue'
 import { ms } from './helpers/timeHelper.js'
 import CountdownSegment from './components/CountdownSegment.vue'
 
@@ -9,17 +9,20 @@ export default defineComponent({
     CountdownSegment
   },
   setup() {
-    const counterDate = null
-    const timerData = {
+    const counterDate = ref(null)
+    const timerData = reactive({
       days: 0,
       hours: 0,
       minutes: 0,
       seconds: 0
-    }
+    })
     let timer = 0
     let timerInterval = null
 
-    onDateInputUpdate()
+    watch(
+      counterDate,
+      (newValue) => onDateInputUpdate(newValue)
+    );
 
     function onDateInputUpdate(newValue) {
       resetTimer()

@@ -1,13 +1,17 @@
 <script>
-import { defineComponent, watch, onMounted } from 'vue';
+import { ref, defineComponent, watch, onMounted } from 'vue';
 import {
   useElementSize,
-  templateRef
+  templateRef,
+  useMouseInElement,
+  useMousePressed,
+  whenever
 } from '@vueuse/core'
 
 export default defineComponent({
   name: 'DrawingApp',
   setup() {
+    const color = ref('Black')
     const canvasWrapper = templateRef('canvasWrapper');
     const canvasElement = templateRef('canvasElement');
     const { width: canvasWidth, height: canvasHeight } = useElementSize(canvasWrapper);
@@ -26,6 +30,7 @@ export default defineComponent({
         canvasContext.beginPath();
         canvasContext.moveTo(...lineStart);
         canvasContext.lineTo(...position);
+        canvasContext.strokeStyle = color.value;
         canvasContext.stroke();
         setStartLine(position);
       }
@@ -41,19 +46,35 @@ export default defineComponent({
 
     // TODO: Your code here
     // 1. Get isOutside and mouse position inside element from vueuse/useMouseInElement
+    const { elementX, elementY, isOutside } = useMouseInElement(canvasWrapper)
 
     // 2. Call draw line when:
     //  - elementX or elementY have changed
     //  - the pointer is inside element
+    watch(
+      () => elementX.value || elementY.value,
+      () => {
+        if (!isOutside.value && pressed.value) {
+          drawLine([elementX.value, elementY.value])
+        }
+      }
+    )
 
     // 3. Add condition to draw line. It should draw only when mouse is pressed.
     //    Use vueuse/useMousePressed
+    const { pressed } = useMousePressed({ target: canvasWrapper })
 
     // 4. Reset startLine if mouse is not pressed (try use vueuse/whenever)
+    whenever(
+      () => !pressed.value,
+      () => setStartLine()
+    )
 
     // BONUS: 5. Implement color picker
+    // input selector izi xd
 
     return {
+      color,
       canvasWidth,
       canvasHeight,
       clearCanvas
@@ -76,7 +97,16 @@ export default defineComponent({
       Your browser does not support the HTML canvas tag.
     </canvas>
 
-    <button class="clear-button" @click="clearCanvas">Clear</button>
+    <div class="clear-button">
+      <select v-model="color">
+        <option value="Black">Negro</option>
+        <option value="Red">Rojo</option>
+        <option value="Blue">Azul</option>
+        <option value="Yellow">Amarillo</option>
+        <option value="Green">Verde</option>
+      </select>
+      <button @click="clearCanvas">Clear</button>
+    </div>
   </div>
 </template>
 

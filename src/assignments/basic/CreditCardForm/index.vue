@@ -1,13 +1,13 @@
 <script>
-import { defineComponent } from 'vue'
+import { defineComponent, ref, reactive, computed } from 'vue'
 
 export default defineComponent({
   name: 'CreditCardForm',
   setup() {
-    const cardNumber = ''
-    const cardName = ''
-    const errors = [true, true]
-    const hasErrors = errors.some(Boolean)
+    const cardNumber = ref('')
+    const cardName = ref('')
+    const errors = reactive([true, true])
+    const hasErrors = computed(() => errors.some(Boolean))
 
     function validateNumber(el) {
       if (!el) return
@@ -34,7 +34,7 @@ export default defineComponent({
     function focusSubmit(el) {
       if (!el) return
 
-      if (!hasErrors) {
+      if (!hasErrors.value) {
         el.disabled = false
         el.focus()
       } else {
@@ -58,11 +58,11 @@ export default defineComponent({
     <form @submit.prevent>
       <div class="field">
         <label for="cardNumber">Card Number:</label>
-        <input id="cardNumber" type="text" placeholder="1234567890123456" />
+        <input :ref="validateNumber" v-model="cardNumber" id="cardNumber" type="text" placeholder="1234567890123456" />
       </div>
       <div class="field">
         <label for="cardName">Card Holder's Name:</label>
-        <input id="cardName" type="text" placeholder="Full Name" />
+        <input :ref="validateName" v-model="cardName" id="cardName" type="text" placeholder="Full Name" />
       </div>
 
       <button :ref="focusSubmit" type="submit">Submit</button>
