@@ -1,27 +1,29 @@
 <script>
 import { defineComponent } from 'vue'
-
 export default defineComponent({
-  setup() {
-    function emitClick() {
-      // TODO: emit 'buttonClick'
+  props: {
+    button: {
+      type: Object,
+      required: true
     }
-
+  },
+  setup(props, { emit }) {
+    function emitClick() {
+      emit('buttonClick', props.button);
+    }
     return {
-      button: {},
       emitClick
     }
   }
 })
 </script>
-
 <template>
   <button
-    class="button"
-    :class="{
+      class="button"
+      :class="{
       [button.classes]: true
     }"
-    @click="emitClick"
+      @click="emitClick"
   >
     {{ button.label }}
   </button>

@@ -11,7 +11,7 @@ import axios from 'axios'
  *  }[]> }} - Returns a promise of an array of product objects.
  */
 export function useApi() {
-  const fetchProducts = async (qty = 4) => {
+  const fetchProducts = async (qty = 8) => {
     let response = null
 
     try {
