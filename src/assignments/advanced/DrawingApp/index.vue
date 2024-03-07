@@ -2,7 +2,10 @@
 import { defineComponent, watch, onMounted } from 'vue';
 import {
   useElementSize,
-  templateRef
+  templateRef,
+  whenever,
+  useMouseInElement,
+  useMousePressed,
 } from '@vueuse/core'
 
 export default defineComponent({
@@ -10,6 +13,8 @@ export default defineComponent({
   setup() {
     const canvasWrapper = templateRef('canvasWrapper');
     const canvasElement = templateRef('canvasElement');
+    const { elementX, elementY } = useMouseInElement(canvasWrapper);
+    const { pressed } = useMousePressed({ taget: canvasWrapper })
     const { width: canvasWidth, height: canvasHeight } = useElementSize(canvasWrapper);
     let canvasContext, lineStart;
 
@@ -17,7 +22,7 @@ export default defineComponent({
       lineStart = position || null;
     }
     function drawLine (position) {
-      if (canvasContext) {
+      if (canvasContext && pressed.value) {
         if (!lineStart) {
           setStartLine(position);
           return;
@@ -38,6 +43,17 @@ export default defineComponent({
     onMounted(() => {
       canvasContext = canvasElement.value.getContext('2d');
     })
+
+    watch(
+        (elementX, elementY),
+        () => { 
+          if (pressed.value) {
+            drawLine([elementX.value, elementY.value ])
+          }
+         }
+    )
+
+    whenever(() => !pressed.value, () => setStartLine());
 
     // TODO: Your code here
     // 1. Get isOutside and mouse position inside element from vueuse/useMouseInElement

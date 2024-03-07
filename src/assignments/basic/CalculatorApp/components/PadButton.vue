@@ -1,14 +1,22 @@
 <script>
-import { defineComponent } from 'vue'
+import { defineComponent, toRefs } from 'vue'
 
 export default defineComponent({
-  setup() {
+  props: {
+    button: {
+      type: Object,
+      required: true
+    }
+  },
+  setup(props, { emit }) {
+    const { button } = toRefs(props)
+
     function emitClick() {
-      // TODO: emit 'buttonClick'
+      emit('buttonClick', button.value)
     }
 
     return {
-      button: {},
+      button,
       emitClick
     }
   }
@@ -16,13 +24,8 @@ export default defineComponent({
 </script>
 
 <template>
-  <button
-    class="button"
-    :class="{
-      [button.classes]: true
-    }"
-    @click="emitClick"
-  >
+  <button class="button" :class="button.classes" @click="emitClick">
     {{ button.label }}
   </button>
 </template>
+
