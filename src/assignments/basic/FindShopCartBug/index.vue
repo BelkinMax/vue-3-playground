@@ -1,10 +1,10 @@
 <script>
-import { defineComponent, ref, shallowRef } from 'vue'
+import { defineComponent, reactive, computed } from 'vue'
 
 export default defineComponent({
   name: 'FindShopCartBug',
   setup() {
-    const products = shallowRef([
+    const products = reactive([
       {
         id: 1,
         name: 'Mouse - Logitech MX Master 3S',
@@ -25,7 +25,7 @@ export default defineComponent({
       }
     ])
 
-    const total = ref(products.value.reduce((acc, product) => acc + product.price * product.quantity, 0) / 100)
+    const total = computed(() => (products.reduce((acc, product) => acc + product.price * product.quantity, 0) / 100))
 
     function increaseQuantity(product) {
       product.quantity += 1
