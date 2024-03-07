@@ -1,8 +1,11 @@
 <script>
-import { defineComponent, watch, onMounted } from 'vue';
+import { defineComponent, watch, onMounted, ref } from 'vue';
 import {
   useElementSize,
-  templateRef
+  templateRef,
+  useMouseInElement,
+  useMousePressed,
+  whenever
 } from '@vueuse/core'
 
 export default defineComponent({
@@ -11,11 +14,15 @@ export default defineComponent({
     const canvasWrapper = templateRef('canvasWrapper');
     const canvasElement = templateRef('canvasElement');
     const { width: canvasWidth, height: canvasHeight } = useElementSize(canvasWrapper);
+    const { isOutside, elementX, elementY } = useMouseInElement(canvasWrapper);
+    const { pressed } = useMousePressed();
+    const color = ref('#000000');
     let canvasContext, lineStart;
 
     function setStartLine(position) {
       lineStart = position || null;
     }
+  
     function drawLine (position) {
       if (canvasContext) {
         if (!lineStart) {
@@ -26,6 +33,7 @@ export default defineComponent({
         canvasContext.beginPath();
         canvasContext.moveTo(...lineStart);
         canvasContext.lineTo(...position);
+        canvasContext.strokeStyle = color.value;
         canvasContext.stroke();
         setStartLine(position);
       }
@@ -39,24 +47,21 @@ export default defineComponent({
       canvasContext = canvasElement.value.getContext('2d');
     })
 
-    // TODO: Your code here
-    // 1. Get isOutside and mouse position inside element from vueuse/useMouseInElement
 
-    // 2. Call draw line when:
-    //  - elementX or elementY have changed
-    //  - the pointer is inside element
+    watch([elementX, elementY, pressed], () => {
+      if (!isOutside.value && pressed.value) {
+        drawLine([elementX.value, elementY.value]);
+      }
+    });
 
-    // 3. Add condition to draw line. It should draw only when mouse is pressed.
-    //    Use vueuse/useMousePressed
-
-    // 4. Reset startLine if mouse is not pressed (try use vueuse/whenever)
-
-    // BONUS: 5. Implement color picker
+    whenever(() => !pressed.value, () => setStartLine());
+    whenever(() => !color.value, () => color.value = '#000000');
 
     return {
       canvasWidth,
       canvasHeight,
-      clearCanvas
+      clearCanvas,
+      color
     }
   }
 })
@@ -67,6 +72,7 @@ export default defineComponent({
     ref="canvasWrapper"
     class="canvas-wrapper"
   >
+    <input type="color" v-model="color"/>
     <canvas
       ref="canvasElement"
       id="canvas"

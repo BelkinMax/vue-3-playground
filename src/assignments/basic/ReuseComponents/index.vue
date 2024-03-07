@@ -1,20 +1,28 @@
 <script>
-import { defineComponent } from 'vue'
-// import { useApi } from './helpers/useApi'
+import { defineComponent, ref } from 'vue'
+import ProductCard from './components/ProductCard/index.vue'
+import { useApi } from './helpers/useApi'
 
 export default defineComponent({
   name: 'ReuseComponents',
+  components: {
+    ProductCard
+  },
   setup() {
-    //TODO:  const api = useApi();
-    const products = [] // await api.fetchProducts()
+    const products = ref([]);
+    const { fetchProducts } = useApi();
 
-    function addProduct(product) {
-      console.log(`${product.id}: ${product.title} added!`)
-    }
+    fetchProducts().then(prds => {
+      products.value = prds
+    })
+
+    // This works too 
+    // (async () => {
+    //   products.value = await fetchProducts();
+    // })()
 
     return {
-      products,
-      addProduct
+      products
     }
   }
 })
@@ -22,18 +30,9 @@ export default defineComponent({
 
 <template>
   <div class="product-grid">
-    <div class="product-card" v-for="product in products" :key="product.id">
-      <div class="thumbnail">
-        <img :src="product.image" :alt="product.title" />
-      </div>
-      <div class="content">
-        <h2 class="title">{{ product.title }}</h2>
-        <p class="price">{{ product.price }}$</p>
-      </div>
-      <div class="cta">
-        <button @click="addProduct">+</button>
-      </div>
-    </div>
+    <template v-for="product in products" :key="product.id">
+      <product-card :product="product" />
+    </template>
   </div>
 </template>
 
