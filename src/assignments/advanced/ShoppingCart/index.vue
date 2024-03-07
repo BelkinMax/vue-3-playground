@@ -1,5 +1,6 @@
 <script>
-import { defineComponent, reactive } from 'vue'
+import {defineComponent, reactive} from 'vue'
+import useShoppingCart from "@/assignments/advanced/ShoppingCart/composables/shoppingCart.js";
 
 export default defineComponent({
   name: 'ShoppingCart',
@@ -8,14 +9,15 @@ export default defineComponent({
       { id: 1, name: 'Mouse - Logitech MX Master 3S', price: 9220 },
       { id: 2, name: 'Keyboard - Logitech MX Keys', price: 7990 },
       { id: 3, name: 'WebCam - Logitech HD Pro Webcam C920', price: 6890 }
-    ])
+    ]);
+    const { cart, total, addToCart, removeFromCart } = useShoppingCart();
 
     return {
       products,
-      cart: [],
-      total: 0,
-      addToCart: () => {},
-      removeFromCart: () => {}
+      cart,
+      total,
+      addToCart,
+      removeFromCart
     }
   }
 })
