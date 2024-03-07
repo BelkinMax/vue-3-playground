@@ -1,30 +1,38 @@
 <script>
-import { defineComponent } from 'vue'
+import { defineComponent, onMounted, watch, ref, computed, reactive, nextTick } from 'vue'
 import { useApi } from './helpers/useApi'
 
 export default defineComponent({
   name: 'QuotesChat',
   setup() {
-    const api = useApi()
-    const history = []
-    let question = ''
-    let isLoading = false
+    const api = useApi();
+    const history = reactive([]);
+    const question = ref('');
+    const questionIncludesDot = computed(() => question.value.includes('.'));
+    const isLoading = ref(false);
+    const inputRef = ref(null);
 
-    // TODO: focus chat input on mounted
+    onMounted(focusInput);
 
-    // TODO: Implement watcher for question.includes('.')
-    //
-    // ? has dot
-    // ? has value
-    // - set loading true
-    // - await fetch
-    // - add to history
-    // - clear input
-    // - set loading false
-    // - focus chat input
+    watch(questionIncludesDot, async () => {
+      if (!questionIncludesDot.value) {
+        return;
+      }
+      try {
+        toggleLoading(true);
+        const answer = await api.fetchQuote(question.value);
+        addToHistory(question.value, answer);
+        clearInput();
+        nextTick(focusInput);
+      } catch (err) {
+        console.error('ERROR :::', err);
+      } finally {
+        toggleLoading(false);
+      }
+    });
 
     function clearInput() {
-      question = ''
+      question.value = ''
     }
 
     function addToHistory(question, answer) {
@@ -40,12 +48,17 @@ export default defineComponent({
     }
 
     function toggleLoading(val) {
-      isLoading = val
+      isLoading.value = val
+    }
+
+    function focusInput() {
+      inputRef.value.focus();
     }
 
     return {
       history,
       question,
+      inputRef,
       isLoading
     }
   }
@@ -66,7 +79,7 @@ export default defineComponent({
 
     <div class="input-wrapper">
       <span class="hint">Tell me about what you want or love:</span>
-      <input v-model="question" :disabled="isLoading" class="input" />
+      <input v-model="question" :disabled="isLoading" class="input" ref="inputRef" />
     </div>
   </div>
 </template>
