@@ -11,7 +11,7 @@ export default defineComponent({
   },
   setup() {
     const clicksLeft = ref(5);
-    const isTeleported = ref(false);
+    const isError = ref(false);
     const { data, isRequired, updateData } = useAlert(
       'clicks-alert',
       { clicks: 0 },
@@ -19,14 +19,14 @@ export default defineComponent({
     );
 
     function onOk () { updateData({ clicks: data.value.clicks + 1 }); clicksLeft.value = clicksLeft.value - 1  };
-    function onClose () { isTeleported.value = true };
+    function onClose () { isError.value = true };
 
     return {
       isRequired,
       clicksLeft,
       onOk,
       onClose,
-      isTeleported
+      isError
     }
   }
 })
@@ -34,9 +34,9 @@ export default defineComponent({
 
 <template>
   <div class="show-alert">
-    <Teleport v-if="isRequired" to="#global-alert" :disabled="isTeleported">
+    <Teleport v-if="isRequired" to="#global-alert" :disabled="isError">
       <TheAlert
-        kind="error"
+        :kind="isError ? 'error' : 'warning'"
         is-removable
         @ok="onOk"
         @close="onClose"
