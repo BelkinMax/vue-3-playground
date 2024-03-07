@@ -1,5 +1,6 @@
 <script>
 import { defineComponent, reactive } from 'vue'
+import useShoppingCart from './composables/shoppingCart';
 
 export default defineComponent({
   name: 'ShoppingCart',
@@ -10,12 +11,14 @@ export default defineComponent({
       { id: 3, name: 'WebCam - Logitech HD Pro Webcam C920', price: 6890 }
     ])
 
+    const { addToCart, removeFromCart, cart, total } = useShoppingCart();
+
     return {
       products,
-      cart: [],
-      total: 0,
-      addToCart: () => {},
-      removeFromCart: () => {}
+      cart,
+      total,
+      addToCart,
+      removeFromCart
     }
   }
 })

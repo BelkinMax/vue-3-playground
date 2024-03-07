@@ -2,7 +2,10 @@
 import { defineComponent, watch, onMounted } from 'vue';
 import {
   useElementSize,
-  templateRef
+  templateRef,
+  useMouseInElement,
+  useMousePressed,
+  whenever
 } from '@vueuse/core'
 
 export default defineComponent({
@@ -12,17 +15,33 @@ export default defineComponent({
     const canvasElement = templateRef('canvasElement');
     const { width: canvasWidth, height: canvasHeight } = useElementSize(canvasWrapper);
     let canvasContext, lineStart;
+    const { elementX: x, elementY: y, isOutside } = useMouseInElement(canvasElement)
+    const { pressed } = useMousePressed()
 
     function setStartLine(position) {
-      lineStart = position || null;
+      lineStart = position ||
+          null;
     }
+
+    watch(
+        () => ([x.value, y.value]),
+        (position) => {
+          if (!isOutside.value && pressed.value) {
+            drawLine(position)
+          }
+        }
+    )
+
+    whenever(() => !pressed.value, () => {
+      setStartLine()
+    })
+
     function drawLine (position) {
       if (canvasContext) {
         if (!lineStart) {
           setStartLine(position);
           return;
         }
-
         canvasContext.beginPath();
         canvasContext.moveTo(...lineStart);
         canvasContext.lineTo(...position);
@@ -56,7 +75,8 @@ export default defineComponent({
     return {
       canvasWidth,
       canvasHeight,
-      clearCanvas
+      clearCanvas,
+      x, y, isOutside
     }
   }
 })
@@ -75,7 +95,6 @@ export default defineComponent({
     >
       Your browser does not support the HTML canvas tag.
     </canvas>
-
     <button class="clear-button" @click="clearCanvas">Clear</button>
   </div>
 </template>

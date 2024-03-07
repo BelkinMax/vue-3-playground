@@ -1,5 +1,5 @@
 <script>
-import { defineComponent } from 'vue'
+import {computed, defineComponent, ref, reactive} from 'vue'
 import PadButton from './components/PadButton.vue'
 
 export default defineComponent({
@@ -8,11 +8,12 @@ export default defineComponent({
     PadButton
   },
   setup() {
-    const currentCalculationButtons = []
-    let calculationResult = ''
-    const calculationValues = currentCalculationButtons.map((button) => button.value).join('')
-    const lastButton = currentCalculationButtons.at(-1) || {}
-    const screenResult = calculationResult || calculationValues
+    const currentCalculationButtons = reactive([])
+    let calculationResult = ref('0');
+    const calculationValues = computed(() => currentCalculationButtons.map((button) => button.value).join(''))
+    const lastButton = computed(() => currentCalculationButtons.at(-1) || {})
+
+    const screenResult = computed(() => calculationResult.value || calculationValues.value);
     const buttons = [
       { label: 'C', value: 'clear', type: 'clear', classes: 'col-span-3' },
       { label: '÷', value: '/', type: 'symbol', classes: '' },
@@ -33,7 +34,7 @@ export default defineComponent({
     ]
 
     function handleClick(button) {
-      calculationResult = ''
+      calculationResult.value = ''
 
       switch (button.type) {
         case 'clear':
@@ -46,18 +47,19 @@ export default defineComponent({
     }
 
     function onClear() {
+      calculationResult.value = '0';
       currentCalculationButtons.splice(0, currentCalculationButtons.length)
     }
     function onEquals() {
-      if (lastButton.type === 'value') {
+      if (lastButton.value.type === 'value') {
         calculationResult.value = eval(calculationValues.value)
       }
     }
     function onNumber(button) {
       if (
-        (!lastButton.type && button.type === 'value') ||
-        (lastButton.type === 'value' && (button.type === 'value' || button.type === 'symbol')) ||
-        (lastButton.type === 'symbol' && button.type === 'value')
+        (!lastButton.value.type && button.type === 'value') ||
+        (lastButton.value.type === 'value' && (button.type === 'value' || button.type === 'symbol')) ||
+        (lastButton.value.type === 'symbol' && button.type === 'value')
       ) {
         currentCalculationButtons.push(button)
       }
@@ -80,7 +82,7 @@ export default defineComponent({
       </div>
     </div>
     <div class="pad">
-      <PadButton v-for="button in buttons" :key="button.value" :button="button" />
+      <PadButton v-for="button in buttons" :key="button.value" :button="button" @buttonClick="handleClick" />
     </div>
   </div>
 </template>

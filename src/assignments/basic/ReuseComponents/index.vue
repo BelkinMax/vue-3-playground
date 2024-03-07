@@ -1,12 +1,18 @@
 <script>
-import { defineComponent } from 'vue'
-// import { useApi } from './helpers/useApi'
+import { defineComponent, ref } from 'vue'
+import { useApi } from './helpers/useApi'
 
 export default defineComponent({
   name: 'ReuseComponents',
-  setup() {
-    //TODO:  const api = useApi();
-    const products = [] // await api.fetchProducts()
+  setup () {
+    const api = useApi();
+    const products = ref([]);
+
+    const fetchProducts = async () => {
+      products.value = await api.fetchProducts()
+    };
+
+    fetchProducts();
 
     function addProduct(product) {
       console.log(`${product.id}: ${product.title} added!`)
@@ -31,7 +37,7 @@ export default defineComponent({
         <p class="price">{{ product.price }}$</p>
       </div>
       <div class="cta">
-        <button @click="addProduct">+</button>
+        <button @click="addProduct(product)">+</button>
       </div>
     </div>
   </div>
