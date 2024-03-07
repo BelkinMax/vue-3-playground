@@ -45,4 +45,12 @@ export default defineComponent({
   align-items: center;
   height: 100%;
 }
+
+#global-alert {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1rem 1rem;
+}
 </style>
