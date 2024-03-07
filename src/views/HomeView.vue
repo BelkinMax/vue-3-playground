@@ -48,7 +48,9 @@ export default defineComponent({
           ],
           [
             ['⚙️ Drawing App', '/drawing-app'],
-            ['⚙️ Shopping Cart', '/shopping-cart']
+            ['⚙️ Shopping Cart', '/shopping-cart'],
+            ['⚙️ Show Alert', '/show-alert'],
+            ['⚙️ Async Components', '/async-components']
           ]
         ]
       ],
